@@ -1,0 +1,111 @@
+public class ListDublamenteEncadeada {
+
+	public static void main(String[] args) {
+		
+		ListDublamenteEncadeada list = new ListDublamenteEncadeada();
+		Node n = new Node("A");
+		list.addLast(n);
+		list.addLast(new Node("C"));
+		System.out.println(list.size);
+		
+		list.addBetween(n, new Node("B"));
+	}
+	
+	public void addBetween(Node refNode, Node newNode) {
+		if (refNode == null || refNode.next == null || newNode == null)
+			throw new NullPointerException();
+		Node oldNext = refNode.next;
+		refNode.next = newNode;
+		Node oldPreview = oldNext.preview;
+		oldNext.preview = newNode;
+		newNode.next = oldNext;
+		newNode.preview = oldPreview;
+	}
+	
+	public void removeFirst() {
+		if (size < 1)
+			throw new IllegalStateException();
+		
+		if (head.next == null && tail.preview == null) {
+			head = null;
+			tail = null;
+		} else  {
+			Node oldHead = head;
+			head = oldHead.next;
+			oldHead.next = null;
+		}
+		
+		size--;
+	}
+	
+	public void removeLast() {
+		if (size < 1)
+			throw new IllegalStateException();
+		
+		if (head.next == null && tail.preview == null) {
+			head = null;
+			tail = null;
+		} else  {
+			Node oldTail = tail;
+			tail = oldTail.preview;
+			oldTail.preview = null;
+		}
+		
+		size--;
+	}
+	
+	public void addFirst(Node node) {
+		if (node == null)
+			throw new NullPointerException();
+		
+		if (head == null && tail == null) {
+			head = node;
+			tail = node;
+		} else if (head.preview == null) {
+			head.preview = node;
+			node.next = head;
+			head = node;
+		} else {
+			tail.preview = node;
+			node.next = tail;
+			head = node;
+		}
+		
+		size++;
+	}
+	
+	public void addLast(Node node) {
+		if (node == null)
+			throw new NullPointerException();
+		
+		if (head == null && tail == null) {
+			head = node;
+			tail = node;
+		} else if (head.next == null) {
+			head.next = node;
+			node.preview = head;
+			tail = node;
+		} else {
+			tail.next = node;
+			node.preview = tail;
+			tail = node;
+		}
+		
+		size++;
+	} 
+
+	public static class Node {
+		String valor;
+		Node next;
+		Node preview;
+		
+		public Node(String valor) {
+			this.valor = valor;
+		}
+	}
+	
+	private Node head;
+	private Node tail;
+	private int size;
+
+}
